@@ -122,7 +122,27 @@ sendBtn.addEventListener("click", async () => {
       precio: precio,
       categoria: categoria
     });
-  };
+  }; 
+
+ resetBtn.addEventListener("click", () => {
+
+  // Reset selects
+  salsa.value = "";
+  proteina.value = "";
+  acomp.value = "";
+  postre.value = "";
+  gaseosa.value = "";
+
+  // Reset toppings
+  document
+    .querySelectorAll('#toppings input[type="checkbox"]')
+    .forEach(c => c.checked = false);
+
+  // Reset resumen
+  lista.innerHTML = "";
+  total.textContent = money(0);
+});
+
 
   // Obligatorios
   add(salsa.value, menu.Salsas[salsa.value], "Salsa");
