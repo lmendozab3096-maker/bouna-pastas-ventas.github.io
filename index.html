@@ -1,370 +1,136 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Buona Pasta | Registro de Venta</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buona Pasta | Registro de Venta</title>
 
-  <style>
-    :root{
-      --amarillo:#F4A300;
-      --dorado:#FFC94D;
-      --gris:#5C5C5C;
-      --negro:#121212;
-      --shadow:0 6px 18px rgba(0,0,0,.45);
-      font-family: Inter, system-ui, sans-serif;
-    }
-
-    *{box-sizing:border-box}
-
-    body{
-      margin:0;
-      background:var(--negro);
-      color:#fff;
-    }
-
-    .wrap{
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding:20px;
-    }
-
-    .card{
-      background:#f9f9f9;
-      color:#121212;
-      border-radius:18px;
-      max-width:900px;
-      width:100%;
-      padding:20px;
-      box-shadow:var(--shadow);
-    }
-
-    header{
-      display:flex;
-      align-items:center;
-      gap:14px;
-    }
-
-    .logo{
-      width:56px;
-      height:56px;
-      border-radius:12px;
-      background:linear-gradient(135deg,var(--amarillo),var(--dorado));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:700;
-      font-size:18px;
-    }
-
-    .subtitle{color:var(--gris)}
-
-    .grid{
-      display:grid;
-      grid-template-columns:1fr 340px;
-      gap:18px;
-      margin-top:16px;
-    }
-
-    @media(max-width:850px){
-      .grid{grid-template-columns:1fr}
-    }
-
-    label{
-      font-size:13px;
-      color:var(--gris);
-    }
-
-    select{
-      width:100%;
-      padding:10px;
-      border-radius:10px;
-      border:1px solid #ddd;
-      margin-top:6px;
-    }
-
-    .section{margin-bottom:12px}
-
-    .toppings{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:6px;
-    }
-
-    .chip{
-      background:#fff;
-      border:1px solid #ddd;
-      border-radius:10px;
-      padding:6px 10px;
-      display:flex;
-      gap:6px;
-      font-size:14px;
-    }
-
-    .actions{
-      display:flex;
-      gap:10px;
-      margin-top:14px;
-    }
-
-    button{
-      border:none;
-      border-radius:10px;
-      padding:10px 14px;
-      font-weight:700;
-      cursor:pointer;
-    }
-
-    .primary{background:var(--amarillo)}
-    .ghost{background:#fff;border:1px solid #ddd}
-
-    .summary{
-      background:#121212;
-      color:#fff;
-      border-radius:14px;
-      padding:14px;
-    }
-
-    .line{
-      display:flex;
-      justify-content:space-between;
-      padding:6px 0;
-      border-bottom:1px dashed #222;
-    }
-
-    .total{
-      display:flex;
-      justify-content:space-between;
-      font-size:18px;
-      margin-top:10px;
-    }
-
-    .total b{color:var(--dorado)}
-  </style>
+<style>
+body{margin:0;background:#121212;color:#fff;font-family:system-ui}
+.wrap{min-height:100vh;display:flex;justify-content:center;align-items:center}
+.card{background:#f9f9f9;color:#121212;width:900px;max-width:95%;padding:20px;border-radius:16px}
+.grid{display:grid;grid-template-columns:1fr 320px;gap:20px}
+select{width:100%;padding:10px;margin-top:6px}
+button{padding:10px 14px;border-radius:10px;border:none;font-weight:700;cursor:pointer}
+.primary{background:#F4A300}
+.summary{background:#121212;color:#fff;padding:14px;border-radius:12px}
+.line{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed #333}
+.total{display:flex;justify-content:space-between;font-size:18px;margin-top:10px}
+.toppings{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:#fff;border:1px solid #ccc;padding:6px 10px;border-radius:10px}
+</style>
 </head>
 
 <body>
 
 <div class="wrap">
-  <div class="card">
+<div class="card">
 
-    <header>
-      <div class="logo">BP</div>
-      <div>
-        <h2>Buona Pasta</h2>
-        <small class="subtitle">Registro de venta</small>
-      </div>
-    </header>
+<h2>Buona Pasta – Registro de venta</h2>
 
-    <div class="grid">
+<div class="grid">
 
-      <div>
-        <div class="section">
-          <label>Salsa *</label>
-          <select id="salsa">
-            <option value="">-- Seleccione una salsa --</option>
-          </select>
-        </div>
+<div>
+<label>Salsa *</label>
+<select id="salsa"><option value="">Seleccione</option></select>
 
-        <div class="section">
-          <label>Proteína *</label>
-          <select id="proteina">
-            <option value="">-- Seleccione una proteína --</option>
-          </select>
-        </div>
+<label>Proteína *</label>
+<select id="proteina"><option value="">Seleccione</option></select>
 
-        <div class="section">
-          <label>Toppings (selección múltiple)</label>
-          <div id="toppings" class="toppings"></div>
-        </div>
+<label>Toppings</label>
+<div id="toppings" class="toppings"></div>
 
-        <div class="section">
-          <label>Acompañamiento</label>
-          <select id="acomp">
-            <option value="">-- Ninguno --</option>
-          </select>
-        </div>
+<label>Acompañamiento</label>
+<select id="acomp"><option value="">Ninguno</option></select>
 
-        <div class="section">
-          <label>Postre</label>
-          <select id="postre">
-            <option value="">-- Ninguno --</option>
-          </select>
-        </div>
+<label>Postre</label>
+<select id="postre"><option value="">Ninguno</option></select>
 
-        <div class="section">
-          <label>Gaseosa</label>
-          <select id="gaseosa">
-            <option value="">-- Ninguna --</option>
-          </select>
-        </div>
+<label>Gaseosa</label>
+<select id="gaseosa"><option value="">Ninguna</option></select>
 
-        <div class="actions">
-          <button class="primary" id="sendBtn">Registrar venta</button>
-          <button class="ghost" id="resetBtn">Limpiar</button>
-        </div>
-      </div>
+<br><br>
+<button id="sendBtn" class="primary">Registrar venta</button>
+</div>
 
-      <div class="summary">
-        <div id="lista"></div>
-        <div class="total">
-          <span>Total</span>
-          <b id="total">$0</b>
-        </div>
-      </div>
+<div class="summary">
+<div id="lista"></div>
+<div class="total">
+<span>Total</span>
+<b id="total">$0</b>
+</div>
+</div>
 
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  const menu = {
-    Salsas:{
-      Pomodoro:6000,
-      Alfredo:6000,
-      "3 quesos":8500,
-      Pesto:6000,
-      Carbonara:12500,
-      "A la mantequilla":6000,
-      Boloñesa:13000
-    },
-    Proteinas:{
-      "Pechuga a la plancha":9000,
-      "Jamón de cerdo":8500,
-      Camarones:10000,
-      "Lomo asado":10500,
-      "Mix de mariscos":9500
-    },
-    Toppings:{
-      Champiñones:5000,
-      "Cebolla morada":3000,
-      "Extra parmesano":4000,
-      "Maíz dulce":4500,
-      Albahaca:4500,
-      Espinaca:4000,
-      "Extra mozzarella":5500
-    },
-    Acompañamientos:{
-      "Bruschetta pesto":3500,
-      "Bruschetta pizzera":5000
-    },
-    Postres:{
-      "Galleta de chocolate":3500,
-      Tiramisú:5500
-    },
-    Gaseosas:{
-      "Coca cola":2500,
-      Colombiana:2000,
-      "Coca cola 0":2500,
-      Manzana:4400,
-      Quatro:3500,
-      "Agua cristal":1500,
-      "Pony malta":3500,
-      Pepsi:2000
-    }
-  };
+console.log("JS CARGADO CORRECTAMENTE");
 
-  const $ = id => document.getElementById(id);
+const menu = {
+Salsas:{Pomodoro:6000,Alfredo:6000,"3 quesos":8500,Pesto:6000,Carbonara:12500,"A la mantequilla":6000,Boloñesa:13000},
+Proteinas:{"Pechuga a la plancha":9000,"Jamón de cerdo":8500,Camarones:10000,"Lomo asado":10500,"Mix de mariscos":9500},
+Toppings:{Champiñones:5000,"Cebolla morada":3000,"Extra parmesano":4000,"Maíz dulce":4500,Albahaca:4500,Espinaca:4000,"Extra mozzarella":5500},
+Acompañamientos:{"Bruschetta pesto":3500,"Bruschetta pizzera":5000},
+Postres:{"Galleta de chocolate":3500,Tiramisú:5500},
+Gaseosas:{"Coca cola":2500,Colombiana:2000,"Coca cola 0":2500,Manzana:4400,Quatro:3500,"Agua cristal":1500,"Pony malta":3500,Pepsi:2000}
+};
 
-  const salsa = $("salsa");
-  const proteina = $("proteina");
-  const toppings = $("toppings");
-  const acomp = $("acomp");
-  const postre = $("postre");
-  const gaseosa = $("gaseosa");
-  const sendBtn = $("sendBtn");
-  const resetBtn = $("resetBtn");
-  const lista = $("lista");
-  const total = $("total");
+const $ = id => document.getElementById(id);
+const money = n => n.toLocaleString('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0});
 
-  const money = n => n.toLocaleString('es-CO',{
-    style:'currency',
-    currency:'COP',
-    maximumFractionDigits:0
-  });
+function fill(select,data){
+Object.keys(data).forEach(k=>{
+select.innerHTML += `<option value="${k}">${k} - ${money(data[k])}</option>`;
+});
+}
 
-  function fillSelect(select, data){
-    Object.keys(data).forEach(k=>{
-      select.innerHTML += `<option value="${k}">${k} - ${money(data[k])}</option>`;
-    });
-  }
+fill(salsa,menu.Salsas);
+fill(proteina,menu.Proteinas);
+fill(acomp,menu.Acompañamientos);
+fill(postre,menu.Postres);
+fill(gaseosa,menu.Gaseosas);
 
-  function fillData(){
-    fillSelect(salsa, menu.Salsas);
-    fillSelect(proteina, menu.Proteinas);
-    fillSelect(acomp, menu.Acompañamientos);
-    fillSelect(postre, menu.Postres);
-    fillSelect(gaseosa, menu.Gaseosas);
+Object.keys(menu.Toppings).forEach(k=>{
+toppings.innerHTML += `<label class="chip"><input type="checkbox" value="${k}"> ${k}</label>`;
+});
 
-    Object.keys(menu.Toppings).forEach(k=>{
-      toppings.innerHTML += `
-        <label class="chip">
-          <input type="checkbox" value="${k}">
-          ${k} - ${money(menu.Toppings[k])}
-        </label>`;
-    });
-  }
+sendBtn.addEventListener("click", ()=>{
+console.log("BOTÓN PRESIONADO");
 
-  function calcularVenta(){
-    if(!salsa.value || !proteina.value){
-      alert("Debes seleccionar salsa y proteína");
-      return null;
-    }
+if(!salsa.value || !proteina.value){
+alert("Selecciona salsa y proteína");
+return;
+}
 
-    let items = [];
-    let totalVenta = 0;
+let totalVenta=0;
+lista.innerHTML="";
 
-    const add = (name, price)=>{
-      items.push({ producto: name, precio: price });
-      totalVenta += price;
-    };
+const add=(n,p)=>{
+lista.innerHTML+=`<div class="line"><span>${n}</span><span>${money(p)}</span></div>`;
+totalVenta+=p;
+};
 
-    add(salsa.value, menu.Salsas[salsa.value]);
-    add(proteina.value, menu.Proteinas[proteina.value]);
+add(salsa.value,menu.Salsas[salsa.value]);
+add(proteina.value,menu.Proteinas[proteina.value]);
 
-    document.querySelectorAll('#toppings input:checked')
-      .forEach(c => add(c.value, menu.Toppings[c.value]));
+document.querySelectorAll('#toppings input:checked')
+.forEach(c=>add(c.value,menu.Toppings[c.value]));
 
-    if(acomp.value) add(acomp.value, menu.Acompañamientos[acomp.value]);
-    if(postre.value) add(postre.value, menu.Postres[postre.value]);
-    if(gaseosa.value) add(gaseosa.value, menu.Gaseosas[gaseosa.value]);
+if(acomp.value) add(acomp.value,menu.Acompañamientos[acomp.value]);
+if(postre.value) add(postre.value,menu.Postres[postre.value]);
+if(gaseosa.value) add(gaseosa.value,menu.Gaseosas[gaseosa.value]);
 
-    return { items, total: totalVenta };
-  }
+total.textContent = money(totalVenta);
 
-  function renderResumen(data){
-    lista.innerHTML = "";
-    data.items.forEach(i=>{
-      lista.innerHTML += `
-        <div class="line">
-          <span>${i.producto}</span>
-          <span>${money(i.precio)}</span>
-        </div>`;
-    });
-    total.textContent = money(data.total);
-  }
+console.log("VENTA REGISTRADA CORRECTAMENTE");
+});
 
-  sendBtn.addEventListener("click", ()=>{
-    const data = calcularVenta();
-    if(!data) return;
-
-    renderResumen(data);
-    console.log("VENTA LISTA PARA MAKE:", data);
-  });
-
-  resetBtn.addEventListener("click", ()=>{
-    location.reload();
-  });
-
-  fillData();
 });
 </script>
 
 </body>
 </html>
-
