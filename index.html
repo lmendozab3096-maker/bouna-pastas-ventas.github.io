@@ -145,6 +145,7 @@
     .total b{color:var(--dorado)}
   </style>
 </head>
+
 <body>
 
 <div class="wrap">
@@ -220,6 +221,8 @@
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+
   const menu = {
     Salsas:{
       Pomodoro:6000,
@@ -267,7 +270,23 @@
   };
 
   const $ = id => document.getElementById(id);
-  const money = n => n.toLocaleString('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0});
+
+  const salsa = $("salsa");
+  const proteina = $("proteina");
+  const toppings = $("toppings");
+  const acomp = $("acomp");
+  const postre = $("postre");
+  const gaseosa = $("gaseosa");
+  const sendBtn = $("sendBtn");
+  const resetBtn = $("resetBtn");
+  const lista = $("lista");
+  const total = $("total");
+
+  const money = n => n.toLocaleString('es-CO',{
+    style:'currency',
+    currency:'COP',
+    maximumFractionDigits:0
+  });
 
   function fillSelect(select, data){
     Object.keys(data).forEach(k=>{
@@ -297,27 +316,29 @@
       return null;
     }
 
-    const add = (name, price)=>{
-  items.push({ nombre: name, precio: price });
-  total += price;
-};
+    let items = [];
+    let totalVenta = 0;
 
+    const add = (name, price)=>{
+      items.push({ producto: name, precio: price });
+      totalVenta += price;
+    };
 
     add(salsa.value, menu.Salsas[salsa.value]);
     add(proteina.value, menu.Proteinas[proteina.value]);
 
     document.querySelectorAll('#toppings input:checked')
-      .forEach(c=> add(c.value, menu.Toppings[c.value]));
+      .forEach(c => add(c.value, menu.Toppings[c.value]));
 
     if(acomp.value) add(acomp.value, menu.Acompañamientos[acomp.value]);
     if(postre.value) add(postre.value, menu.Postres[postre.value]);
     if(gaseosa.value) add(gaseosa.value, menu.Gaseosas[gaseosa.value]);
 
-    return {items,total};
+    return { items, total: totalVenta };
   }
 
   function renderResumen(data){
-    lista.innerHTML='';
+    lista.innerHTML = "";
     data.items.forEach(i=>{
       lista.innerHTML += `
         <div class="line">
@@ -328,34 +349,22 @@
     total.textContent = money(data.total);
   }
 
-  sendBtn.onclick = ()=>{
+  sendBtn.addEventListener("click", ()=>{
     const data = calcularVenta();
     if(!data) return;
+
     renderResumen(data);
+    console.log("VENTA LISTA PARA MAKE:", data);
+  });
 
-    fetch("https://hook.make.com/https://hook.us2.make.com/5a5wu2jmk22svzmiqmmk20ed28y2f8m0", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    fecha: new Date().toISOString(),
-    items: data.items,
-    total: data.total
-  })
-})
-.then(()=> console.log("Venta enviada a Make"))
-.catch(err=> {
-  console.error(err);
-  alert("Error enviando la venta");
-});
-
-  };
-
-  resetBtn.onclick = ()=> location.reload();
+  resetBtn.addEventListener("click", ()=>{
+    location.reload();
+  });
 
   fillData();
+});
 </script>
 
 </body>
 </html>
+
