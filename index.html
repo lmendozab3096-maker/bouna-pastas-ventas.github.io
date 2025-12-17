@@ -98,21 +98,73 @@ Object.keys(menu.Toppings).forEach(k=>{
 toppings.innerHTML += `<label class="chip"><input type="checkbox" value="${k}"> ${k}</label>`;
 });
 
-sendBtn.addEventListener("click", ()=>{
-console.log("BOTÓN PRESIONADO");
+sendBtn.addEventListener("click", async () => {
+  console.log("BOTÓN PRESIONADO");
 
-if(!salsa.value || !proteina.value){
-alert("Selecciona salsa y proteína");
-return;
-}
+  if (!salsa.value || !proteina.value) {
+    alert("Selecciona salsa y proteína");
+    return;
+  }
 
-let totalVenta=0;
-lista.innerHTML="";
+  let totalVenta = 0;
+  lista.innerHTML = "";
+  const items = [];
 
-const add=(n,p)=>{
-lista.innerHTML+=`<div class="line"><span>${n}</span><span>${money(p)}</span></div>`;
-totalVenta+=p;
-};
+  const add = (nombre, precio, categoria) => {
+    lista.innerHTML += `
+      <div class="line">
+        <span>${nombre}</span>
+        <span>${money(precio)}</span>
+      </div>`;
+    totalVenta += precio;
+    items.push({
+      producto: nombre,
+      precio: precio,
+      categoria: categoria
+    });
+  };
+
+  // Obligatorios
+  add(salsa.value, menu.Salsas[salsa.value], "Salsa");
+  add(proteina.value, menu.Proteinas[proteina.value], "Proteína");
+
+  // Toppings
+  document.querySelectorAll('#toppings input:checked')
+    .forEach(c => add(c.value, menu.Toppings[c.value], "Topping"));
+
+  // Opcionales
+  if (acomp.value) add(acomp.value, menu.Acompañamientos[acomp.value], "Acompañamiento");
+  if (postre.value) add(postre.value, menu.Postres[postre.value], "Postre");
+  if (gaseosa.value) add(gaseosa.value, menu.Gaseosas[gaseosa.value], "Gaseosa");
+
+  total.textContent = money(totalVenta);
+
+  // 🔗 Payload para Make
+  const payload = {
+    fecha: new Date().toISOString(),
+    total: totalVenta,
+    items: items
+  };
+
+  console.log("ENVIANDO A MAKE:", payload);
+
+  try {
+    const response = await fetch("https://hook.make.com/https://hook.us2.make.com/5a5wu2jmk22svzmiqmmk20ed28y2f8m0", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) throw new Error("Error HTTP");
+
+    alert("Venta registrada correctamente ✅");
+
+  } catch (error) {
+    console.error(error);
+    alert("Error enviando la venta a Make ❌");
+  }
+});
+
 
 add(salsa.value,menu.Salsas[salsa.value]);
 add(proteina.value,menu.Proteinas[proteina.value]);
