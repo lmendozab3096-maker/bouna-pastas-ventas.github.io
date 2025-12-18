@@ -343,7 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
     total.textContent = money(totalVenta);
 
     // Envío a Make (webhook)
-    await fetch("https://hook.make.com/TU_WEBHOOK_AQUI", {
+    await fetch("https://hook.us2.make.com/5a5wu2jmk22svzmiqmmk20ed28y2f8m0", {
       method:"POST",
       headers:{ "Content-Type":"application/json" },
       body:JSON.stringify({
