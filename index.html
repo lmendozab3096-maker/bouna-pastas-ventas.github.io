@@ -1,133 +1,374 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Buona Pasta | Registro de Venta</title>
+  <!-- Configuración básica del documento -->
+  <meta charset="UTF-8">
+  <title>Buona Pasta | Registro de Ventas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body{margin:0;background:#121212;color:#fff;font-family:system-ui}
-.wrap{min-height:100vh;display:flex;justify-content:center;align-items:center}
-.card{background:#f9f9f9;color:#121212;width:900px;max-width:95%;padding:20px;border-radius:16px}
-.grid{display:grid;grid-template-columns:1fr 320px;gap:20px}
-select{width:100%;padding:10px;margin-top:6px}
-button{padding:10px 14px;border-radius:10px;border:none;font-weight:700;cursor:pointer}
-.primary{background:#F4A300}
-.summary{background:#121212;color:#fff;padding:14px;border-radius:12px}
-.line{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed #333}
-.total{display:flex;justify-content:space-between;font-size:18px;margin-top:10px}
-.toppings{display:flex;flex-wrap:wrap;gap:8px}
-.chip{background:#fff;border:1px solid #ccc;padding:6px 10px;border-radius:10px}
-</style>
+  <!-- =========================
+       ESTILOS (CSS)
+       ========================= -->
+  <style>
+    /* Variables globales de colores y tipografía */
+    :root{
+      --amarillo:#F4A300;
+      --dorado:#FFC94D;
+      --gris:#5C5C5C;
+      --negro:#121212;
+      --shadow:0 6px 18px rgba(0,0,0,.45);
+      font-family: Inter, system-ui, sans-serif;
+    }
+
+    *{ box-sizing:border-box }
+
+    /* Estilo base de la página */
+    body{
+      margin:0;
+      background:var(--negro);
+      color:#fff;
+    }
+
+    /* Contenedor principal centrado */
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+    }
+
+    /* Tarjeta principal */
+    .card{
+      background:#f9f9f9;
+      color:#121212;
+      border-radius:18px;
+      max-width:900px;
+      width:100%;
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+
+    /* Encabezado */
+    header{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+
+    .logo{
+      width:56px;
+      height:56px;
+      border-radius:12px;
+      background:linear-gradient(135deg,var(--amarillo),var(--dorado));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+    }
+
+    .subtitle{ color:var(--gris) }
+
+    /* Grid principal (formulario + resumen) */
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 340px;
+      gap:18px;
+      margin-top:16px;
+    }
+
+    @media(max-width:850px){
+      .grid{ grid-template-columns:1fr }
+    }
+
+    label{
+      font-size:13px;
+      color:var(--gris);
+    }
+
+    select{
+      width:100%;
+      padding:10px;
+      border-radius:10px;
+      border:1px solid #ddd;
+      margin-top:6px;
+    }
+
+    .section{ margin-bottom:12px }
+
+    /* Toppings como chips */
+    .toppings{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:6px;
+    }
+
+    .chip{
+      background:#fff;
+      border:1px solid #ddd;
+      border-radius:10px;
+      padding:6px 10px;
+      display:flex;
+      gap:6px;
+      font-size:14px;
+      align-items:center;
+    }
+
+    /* Botones */
+    .actions{
+      display:flex;
+      gap:10px;
+      margin-top:14px;
+    }
+
+    button{
+      border:none;
+      border-radius:10px;
+      padding:10px 14px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .primary{ background:var(--amarillo) }
+    .ghost{ background:#fff; border:1px solid #ddd }
+
+    /* Resumen de venta */
+    .summary{
+      background:#121212;
+      color:#fff;
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .line{
+      display:flex;
+      justify-content:space-between;
+      padding:6px 0;
+      border-bottom:1px dashed #222;
+    }
+
+    .total{
+      display:flex;
+      justify-content:space-between;
+      font-size:18px;
+      margin-top:10px;
+    }
+
+    .total b{ color:var(--dorado) }
+  </style>
 </head>
 
 <body>
 
+<!-- =========================
+     HTML / INTERFAZ
+     ========================= -->
 <div class="wrap">
-<div class="card">
+  <div class="card">
 
-<h2>Buona Pasta – Registro de venta</h2>
+    <!-- Encabezado -->
+    <header>
+      <div class="logo">BP</div>
+      <div>
+        <h2>Buona Pasta</h2>
+        <small class="subtitle">Registro de venta</small>
+      </div>
+    </header>
 
-<div class="grid">
+    <div class="grid">
 
-<div>
-<label>Salsa *</label>
-<select id="salsa"><option value="">Seleccione</option></select>
+      <!-- FORMULARIO -->
+      <div>
 
-<label>Proteína *</label>
-<select id="proteina"><option value="">Seleccione</option></select>
+        <!-- Select de salsa -->
+        <div class="section">
+          <label>Salsa *</label>
+          <select id="salsa">
+            <option value="">-- Seleccione una salsa --</option>
+          </select>
+        </div>
 
-<label>Toppings</label>
-<div id="toppings" class="toppings"></div>
+        <!-- Select de proteína -->
+        <div class="section">
+          <label>Proteína *</label>
+          <select id="proteina">
+            <option value="">-- Seleccione una proteína --</option>
+          </select>
+        </div>
 
-<label>Acompañamiento</label>
-<select id="acomp"><option value="">Ninguno</option></select>
+        <!-- Toppings (checkbox múltiples) -->
+        <div class="section">
+          <label>Toppings (selección múltiple)</label>
+          <div id="toppings" class="toppings"></div>
+        </div>
 
-<label>Postre</label>
-<select id="postre"><option value="">Ninguno</option></select>
+        <!-- Acompañamientos -->
+        <div class="section">
+          <label>Acompañamiento</label>
+          <select id="acomp">
+            <option value="">-- Ninguno --</option>
+          </select>
+        </div>
 
-<label>Gaseosa</label>
-<select id="gaseosa"><option value="">Ninguna</option></select>
+        <!-- Postres -->
+        <div class="section">
+          <label>Postre</label>
+          <select id="postre">
+            <option value="">-- Ninguno --</option>
+          </select>
+        </div>
 
-<br><br>
-<button id="sendBtn" class="primary">Registrar venta</button>
+        <!-- Gaseosas -->
+        <div class="section">
+          <label>Gaseosa</label>
+          <select id="gaseosa">
+            <option value="">-- Ninguna --</option>
+          </select>
+        </div>
+
+        <!-- Botones -->
+        <div class="actions">
+          <button class="primary" id="sendBtn">Registrar venta</button>
+          <button class="ghost" id="resetBtn">Limpiar</button>
+        </div>
+      </div>
+
+      <!-- RESUMEN -->
+      <div class="summary">
+        <div id="lista"></div>
+        <div class="total">
+          <span>Total</span>
+          <b id="total">$0</b>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
 
-<div class="summary">
-<div id="lista"></div>
-<div class="total">
-<span>Total</span>
-<b id="total">$0</b>
-</div>
-</div>
-
-</div>
-</div>
-</div>
-
+<!-- =========================
+     JAVASCRIPT / LÓGICA
+     ========================= -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-console.log("JS CARGADO CORRECTAMENTE");
+  /* Helper para obtener elementos por ID */
+  const $ = id => document.getElementById(id);
 
-const menu = {
-Salsas:{Pomodoro:6000,Alfredo:6000,"3 quesos":8500,Pesto:6000,Carbonara:12500,"A la mantequilla":6000,Boloñesa:13000},
-Proteinas:{"Pechuga a la plancha":9000,"Jamón de cerdo":8500,Camarones:10000,"Lomo asado":10500,"Mix de mariscos":9500},
-Toppings:{Champiñones:5000,"Cebolla morada":3000,"Extra parmesano":4000,"Maíz dulce":4500,Albahaca:4500,Espinaca:4000,"Extra mozzarella":5500},
-Acompañamientos:{"Bruschetta pesto":3500,"Bruschetta pizzera":5000},
-Postres:{"Galleta de chocolate":3500,Tiramisú:5500},
-Gaseosas:{"Coca cola":2500,Colombiana:2000,"Coca cola 0":2500,Manzana:4400,Quatro:3500,"Agua cristal":1500,"Pony malta":3500,Pepsi:2000}
-};
+  /* Referencias a elementos del DOM */
+  const salsa = $("salsa");
+  const proteina = $("proteina");
+  const toppings = $("toppings");
+  const acomp = $("acomp");
+  const postre = $("postre");
+  const gaseosa = $("gaseosa");
+  const sendBtn = $("sendBtn");
+  const resetBtn = $("resetBtn");
+  const lista = $("lista");
+  const total = $("total");
 
-const $ = id => document.getElementById(id);
-const money = n => n.toLocaleString('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0});
+  /* Formateo de moneda COP */
+  const money = n => n.toLocaleString("es-CO", {
+    style:"currency",
+    currency:"COP",
+    maximumFractionDigits:0
+  });
 
-function fill(select,data){
-Object.keys(data).forEach(k=>{
-select.innerHTML += `<option value="${k}">${k} - ${money(data[k])}</option>`;
-});
-}
+  /* Catálogo de productos y precios */
+  const menu = {
+    Salsas:{ Pomodoro:6000, Alfredo:6000, "3 quesos":8500, Pesto:6000, Carbonara:12500, "A la mantequilla":6000, Boloñesa:13000 },
+    Proteinas:{ "Pechuga a la plancha":9000, "Jamón de cerdo":8500, Camarones:10000, "Lomo asado":10500, "Mix de mariscos":9500 },
+    Toppings:{ Champiñones:5000, "Cebolla morada":3000, "Extra parmesano":4000, "Maíz dulce":4500, Albahaca:4500, Espinaca:4000, "Extra mozzarella":5500 },
+    Acompañamientos:{ "Bruschetta pesto":3500, "Bruschetta pizzera":5000 },
+    Postres:{ "Galleta de chocolate":3500, Tiramisú:5500 },
+    Gaseosas:{ "Coca cola":2500, Colombiana:2000, "Coca cola 0":2500, Manzana:4400, Quatro:3500, "Agua cristal":1500, "Pony malta":3500, Pepsi:2000 }
+  };
 
-fill(salsa,menu.Salsas);
-fill(proteina,menu.Proteinas);
-fill(acomp,menu.Acompañamientos);
-fill(postre,menu.Postres);
-fill(gaseosa,menu.Gaseosas);
+  /* Llena selects con datos */
+  const fill = (sel, data) =>
+    Object.keys(data).forEach(k =>
+      sel.innerHTML += `<option value="${k}">${k} - ${money(data[k])}</option>`
+    );
 
-Object.keys(menu.Toppings).forEach(k=>{
-toppings.innerHTML += `<label class="chip"><input type="checkbox" value="${k}"> ${k}</label>`;
-});
+  /* Inicialización del formulario */
+  fill(salsa, menu.Salsas);
+  fill(proteina, menu.Proteinas);
+  fill(acomp, menu.Acompañamientos);
+  fill(postre, menu.Postres);
+  fill(gaseosa, menu.Gaseosas);
 
-sendBtn.addEventListener("click", ()=>{
-console.log("BOTÓN PRESIONADO");
+  /* Carga toppings */
+  Object.keys(menu.Toppings).forEach(k=>{
+    toppings.innerHTML += `
+      <label class="chip">
+        <input type="checkbox" value="${k}">
+        ${k} - ${money(menu.Toppings[k])}
+      </label>`;
+  });
 
-if(!salsa.value || !proteina.value){
-alert("Selecciona salsa y proteína");
-return;
-}
+  /* =========================
+     REGISTRAR VENTA
+     ========================= */
+  sendBtn.addEventListener("click", async () => {
 
-let totalVenta=0;
-lista.innerHTML="";
+    // Validación mínima
+    if(!salsa.value || !proteina.value){
+      alert("Selecciona salsa y proteína");
+      return;
+    }
 
-const add=(n,p)=>{
-lista.innerHTML+=`<div class="line"><span>${n}</span><span>${money(p)}</span></div>`;
-totalVenta+=p;
-};
+    lista.innerHTML="";
+    let totalVenta=0;
+    const items=[];
 
-add(salsa.value,menu.Salsas[salsa.value]);
-add(proteina.value,menu.Proteinas[proteina.value]);
+    // Función para agregar items a la venta
+    const add=(n,p,c)=>{
+      lista.innerHTML+=`<div class="line"><span>${n}</span><span>${money(p)}</span></div>`;
+      totalVenta+=p;
+      items.push({ producto:n, precio:p, categoria:c });
+    };
 
-document.querySelectorAll('#toppings input:checked')
-.forEach(c=>add(c.value,menu.Toppings[c.value]));
+    // Agregar productos seleccionados
+    add(salsa.value, menu.Salsas[salsa.value], "Salsa");
+    add(proteina.value, menu.Proteinas[proteina.value], "Proteína");
 
-if(acomp.value) add(acomp.value,menu.Acompañamientos[acomp.value]);
-if(postre.value) add(postre.value,menu.Postres[postre.value]);
-if(gaseosa.value) add(gaseosa.value,menu.Gaseosas[gaseosa.value]);
+    document.querySelectorAll('#toppings input:checked')
+      .forEach(c=> add(c.value, menu.Toppings[c.value], "Topping"));
 
-total.textContent = money(totalVenta);
+    if(acomp.value) add(acomp.value, menu.Acompañamientos[acomp.value], "Acompañamiento");
+    if(postre.value) add(postre.value, menu.Postres[postre.value], "Postre");
+    if(gaseosa.value) add(gaseosa.value, menu.Gaseosas[gaseosa.value], "Gaseosa");
 
-console.log("VENTA REGISTRADA CORRECTAMENTE");
-});
+    total.textContent = money(totalVenta);
+
+    // Envío a Make (webhook)
+    await fetch("https://hook.make.com/TU_WEBHOOK_AQUI", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify({
+        fecha:new Date().toISOString(),
+        total:totalVenta,
+        items
+      })
+    });
+
+    alert("Venta enviada correctamente ✅");
+  });
+
+  /* =========================
+     LIMPIAR FORMULARIO
+     ========================= */
+  resetBtn.addEventListener("click", ()=>{
+    salsa.value="";
+    proteina.value="";
+    acomp.value="";
+    postre.value="";
+    gaseosa.value="";
+    document.querySelectorAll('#toppings input').forEach(c=>c.checked=false);
+    lista.innerHTML="";
+    total.textContent=money(0);
+  });
 
 });
 </script>
