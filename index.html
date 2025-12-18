@@ -1,16 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <!-- Configuración básica del documento -->
   <meta charset="UTF-8">
   <title>Buona Pasta | Registro de Ventas</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- =========================
-       ESTILOS (CSS)
-       ========================= -->
   <style>
-    /* Variables globales de colores y tipografía */
     :root{
       --amarillo:#F4A300;
       --dorado:#FFC94D;
@@ -22,14 +17,12 @@
 
     *{ box-sizing:border-box }
 
-    /* Estilo base de la página */
     body{
       margin:0;
       background:var(--negro);
       color:#fff;
     }
 
-    /* Contenedor principal centrado */
     .wrap{
       min-height:100vh;
       display:flex;
@@ -38,7 +31,6 @@
       padding:20px;
     }
 
-    /* Tarjeta principal */
     .card{
       background:#f9f9f9;
       color:#121212;
@@ -49,7 +41,6 @@
       box-shadow:var(--shadow);
     }
 
-    /* Encabezado */
     header{
       display:flex;
       gap:14px;
@@ -69,7 +60,6 @@
 
     .subtitle{ color:var(--gris) }
 
-    /* Grid principal (formulario + resumen) */
     .grid{
       display:grid;
       grid-template-columns:1fr 340px;
@@ -96,7 +86,6 @@
 
     .section{ margin-bottom:12px }
 
-    /* Toppings como chips */
     .toppings{
       display:flex;
       flex-wrap:wrap;
@@ -115,7 +104,6 @@
       align-items:center;
     }
 
-    /* Botones */
     .actions{
       display:flex;
       gap:10px;
@@ -133,7 +121,6 @@
     .primary{ background:var(--amarillo) }
     .ghost{ background:#fff; border:1px solid #ddd }
 
-    /* Resumen de venta */
     .summary{
       background:#121212;
       color:#fff;
@@ -161,13 +148,9 @@
 
 <body>
 
-<!-- =========================
-     HTML / INTERFAZ
-     ========================= -->
 <div class="wrap">
   <div class="card">
 
-    <!-- Encabezado -->
     <header>
       <div class="logo">BP</div>
       <div>
@@ -181,7 +164,6 @@
       <!-- FORMULARIO -->
       <div>
 
-        <!-- Select de salsa -->
         <div class="section">
           <label>Salsa *</label>
           <select id="salsa">
@@ -189,7 +171,6 @@
           </select>
         </div>
 
-        <!-- Select de proteína -->
         <div class="section">
           <label>Proteína *</label>
           <select id="proteina">
@@ -197,13 +178,11 @@
           </select>
         </div>
 
-        <!-- Toppings (checkbox múltiples) -->
         <div class="section">
           <label>Toppings (selección múltiple)</label>
           <div id="toppings" class="toppings"></div>
         </div>
 
-        <!-- Acompañamientos -->
         <div class="section">
           <label>Acompañamiento</label>
           <select id="acomp">
@@ -211,7 +190,6 @@
           </select>
         </div>
 
-        <!-- Postres -->
         <div class="section">
           <label>Postre</label>
           <select id="postre">
@@ -219,7 +197,6 @@
           </select>
         </div>
 
-        <!-- Gaseosas -->
         <div class="section">
           <label>Gaseosa</label>
           <select id="gaseosa">
@@ -227,7 +204,6 @@
           </select>
         </div>
 
-        <!-- Botones -->
         <div class="actions">
           <button class="primary" id="sendBtn">Registrar venta</button>
           <button class="ghost" id="resetBtn">Limpiar</button>
@@ -247,16 +223,11 @@
   </div>
 </div>
 
-<!-- =========================
-     JAVASCRIPT / LÓGICA
-     ========================= -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* Helper para obtener elementos por ID */
   const $ = id => document.getElementById(id);
 
-  /* Referencias a elementos del DOM */
   const salsa = $("salsa");
   const proteina = $("proteina");
   const toppings = $("toppings");
@@ -268,14 +239,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const lista = $("lista");
   const total = $("total");
 
-  /* Formateo de moneda COP */
   const money = n => n.toLocaleString("es-CO", {
     style:"currency",
     currency:"COP",
     maximumFractionDigits:0
   });
 
-  /* Catálogo de productos y precios */
   const menu = {
     Salsas:{ Pomodoro:6000, Alfredo:6000, "3 quesos":8500, Pesto:6000, Carbonara:12500, "A la mantequilla":6000, Boloñesa:13000 },
     Proteinas:{ "Pechuga a la plancha":9000, "Jamón de cerdo":8500, Camarones:10000, "Lomo asado":10500, "Mix de mariscos":9500 },
@@ -285,20 +254,17 @@ document.addEventListener("DOMContentLoaded", () => {
     Gaseosas:{ "Coca cola":2500, Colombiana:2000, "Coca cola 0":2500, Manzana:4400, Quatro:3500, "Agua cristal":1500, "Pony malta":3500, Pepsi:2000 }
   };
 
-  /* Llena selects con datos */
   const fill = (sel, data) =>
     Object.keys(data).forEach(k =>
       sel.innerHTML += `<option value="${k}">${k} - ${money(data[k])}</option>`
     );
 
-  /* Inicialización del formulario */
   fill(salsa, menu.Salsas);
   fill(proteina, menu.Proteinas);
   fill(acomp, menu.Acompañamientos);
   fill(postre, menu.Postres);
   fill(gaseosa, menu.Gaseosas);
 
-  /* Carga toppings */
   Object.keys(menu.Toppings).forEach(k=>{
     toppings.innerHTML += `
       <label class="chip">
@@ -307,58 +273,60 @@ document.addEventListener("DOMContentLoaded", () => {
       </label>`;
   });
 
-  /* =========================
-     REGISTRAR VENTA
-     ========================= */
-  sendBtn.addEventListener("click", async () => {
-
-    // Validación mínima
+  function calcularVenta(){
     if(!salsa.value || !proteina.value){
       alert("Selecciona salsa y proteína");
-      return;
+      return null;
     }
 
-    lista.innerHTML="";
-    let totalVenta=0;
-    const items=[];
+    let items = [];
+    let totalVenta = 0;
 
-    // Función para agregar items a la venta
-    const add=(n,p,c)=>{
-      lista.innerHTML+=`<div class="line"><span>${n}</span><span>${money(p)}</span></div>`;
-      totalVenta+=p;
-      items.push({ producto:n, precio:p, categoria:c });
+    const add = (producto, precio, tipo) => {
+      items.push({ producto, tipo, precio });
+      totalVenta += precio;
     };
 
-    // Agregar productos seleccionados
     add(salsa.value, menu.Salsas[salsa.value], "Salsa");
     add(proteina.value, menu.Proteinas[proteina.value], "Proteína");
 
     document.querySelectorAll('#toppings input:checked')
-      .forEach(c=> add(c.value, menu.Toppings[c.value], "Topping"));
+      .forEach(c => add(c.value, menu.Toppings[c.value], "Topping"));
 
     if(acomp.value) add(acomp.value, menu.Acompañamientos[acomp.value], "Acompañamiento");
     if(postre.value) add(postre.value, menu.Postres[postre.value], "Postre");
     if(gaseosa.value) add(gaseosa.value, menu.Gaseosas[gaseosa.value], "Gaseosa");
 
-    total.textContent = money(totalVenta);
+    return {
+      fecha: new Date().toISOString(),
+      total: totalVenta,
+      items: items
+    };
+  }
 
-    // Envío a Make (webhook)
-    await fetch("https://hook.us2.make.com/5a5wu2jmk22svzmiqmmk20ed28y2f8m0", {
+  sendBtn.addEventListener("click", () => {
+    const data = calcularVenta();
+    if(!data) return;
+
+    lista.innerHTML="";
+    data.items.forEach(i=>{
+      lista.innerHTML += `
+        <div class="line">
+          <span>${i.producto}</span>
+          <span>${money(i.precio)}</span>
+        </div>`;
+    });
+    total.textContent = money(data.total);
+
+    fetch("https://hook.us2.make.com/87bzpbspxga3lrkon11hlknqa1wln6gs", {
       method:"POST",
       headers:{ "Content-Type":"application/json" },
-      body:JSON.stringify({
-        fecha:new Date().toISOString(),
-        total:totalVenta,
-        items
-      })
+      body:JSON.stringify(data)
     });
 
     alert("Venta enviada correctamente ✅");
   });
 
-  /* =========================
-     LIMPIAR FORMULARIO
-     ========================= */
   resetBtn.addEventListener("click", ()=>{
     salsa.value="";
     proteina.value="";
@@ -375,3 +343,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
